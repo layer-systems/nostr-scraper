@@ -22,8 +22,9 @@ async def relay_websockets(websocket1, websocket2):
                 websocket1 = await websockets.connect(os.environ.get("INPUT_RELAY"))
                 websocket2 = await websockets.connect(os.environ.get("OUTPUT_RELAY"))
 
-            except:
+            except Exception as error:
                 # If the reconnection attempt fails, repeat the loop and try again
+                print(f"Failed to reconnect: {error}")
                 continue
 
 async def main():
@@ -43,9 +44,9 @@ async def main():
                 await websocket1.send(message)
                 await relay_websockets(websocket1, websocket2)
 
-    except:
+    except Exception as error:
         # If the initial connection attempt fails, attempt to reconnect immediately
-        print("Connection failed, attempting to reconnect...")
+        print(f"Failed to connect: {error}")
         await asyncio.sleep(1)
         await main()
 
