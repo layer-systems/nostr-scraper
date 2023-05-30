@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  nostr-scraper:
+    build: .
+    environment:
+      INPUT_RELAY: wss://relay.nostr.band
+      OUTPUT_RELAY: ws://relay:8080
+    restart: always
+  relay:
+    image: ghcr.io/mroxso/nostr-rs-relay:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - ./data:/usr/src/app/db:Z
