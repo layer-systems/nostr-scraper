@@ -14,7 +14,7 @@ async def relay_websockets(inputWebsocket, outputWebsocket, kinds):
                     del event[1]
                     # log event
                     # print(json.dumps(event))
-                    print("Sending event with id " + str(event[1]['id']) + " to " + os.environ.get("OUTPUT_RELAY"))
+                    print("Sending event with id " + str(event[1]['id']) + " (kind: "+str(event[1]['kind'])+") to " + os.environ.get("OUTPUT_RELAY"))
 
                     # Relay the event to websocket 2
                     await outputWebsocket.send(json.dumps(event))
