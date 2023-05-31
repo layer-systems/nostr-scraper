@@ -6,7 +6,7 @@ services:
     environment:
       INPUT_RELAY: wss://relay.nostr.band
       OUTPUT_RELAY: ws://relay:8080
-      KINDS: "[0]"
+      KINDS: "[0,1]"
     restart: always
     depends_on:
       - relay

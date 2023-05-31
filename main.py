@@ -34,7 +34,7 @@ async def relay_websockets(inputWebsocket, outputWebsocket, kinds):
                     async with websockets.connect(os.environ.get("OUTPUT_RELAY")) as outputWebsocket:
                         message = '["REQ", "1337", {"kinds": '+kinds+', "limit": 10}]'
                         await inputWebsocket.send(message)
-                        await relay_websockets(inputWebsocket, outputWebsocket)
+                        await relay_websockets(inputWebsocket, outputWebsocket, kinds)
 
             except Exception as error:
                 # If the reconnection attempt fails, repeat the loop and try again
