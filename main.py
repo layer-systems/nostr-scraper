@@ -3,7 +3,7 @@ import os
 import websockets
 import json
 
-async def relay_websockets(inputWebsocket, outputWebsocket):
+async def relay_websockets(inputWebsocket, outputWebsocket, kinds):
     while True:
         try:
             # Wait for an event on websocket 1
@@ -32,7 +32,7 @@ async def relay_websockets(inputWebsocket, outputWebsocket):
             try:
                 async with websockets.connect(os.environ.get("INPUT_RELAY")) as inputWebsocket:
                     async with websockets.connect(os.environ.get("OUTPUT_RELAY")) as outputWebsocket:
-                        message = '["REQ", "1337", {"kinds": [1], "limit": 1}]'
+                        message = '["REQ", "1337", {"kinds": '+kinds+', "limit": 10}]'
                         await inputWebsocket.send(message)
                         await relay_websockets(inputWebsocket, outputWebsocket)
 
@@ -46,6 +46,7 @@ async def main():
     # Read the websocket URLs from environment variables
     inputUrl = os.environ.get("INPUT_RELAY")
     outputUrl = os.environ.get("OUTPUT_RELAY")
+    kinds = os.environ.get("KINDS")
 
     # If either URL is missing, raise an error
     if not inputUrl or not outputUrl:
@@ -54,9 +55,9 @@ async def main():
     try:
         async with websockets.connect(inputUrl) as inputWebsocket:
             async with websockets.connect(outputUrl) as outputWebsocket:
-                message = '["REQ", "1337", {"kinds": [1]}]'
+                message = '["REQ", "1337", {"kinds": '+kinds+'}]'
                 await inputWebsocket.send(message)
-                await relay_websockets(inputWebsocket, outputWebsocket)
+                await relay_websockets(inputWebsocket, outputWebsocket, kinds)
 
     except Exception as error:
         # If the initial connection attempt fails, attempt to reconnect immediately

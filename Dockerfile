@@ -8,5 +8,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 ENV INPUT_RELAY=wss://relay.nostr.band
 ENV OUTPUT_RELAY=ws://localhost:9944
+ENV KINDS=[0,1]
 
 ENTRYPOINT [ "python", "-u", "./main.py" ]
