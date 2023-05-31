@@ -9,14 +9,18 @@ async def relay_websockets(websocket1, websocket2):
             # Wait for an event on websocket 1
             event = json.loads(await websocket1.recv())
             try:
-                # Remove the event ID from the event
-                del event[1]
-                # log event
-                # print(json.dumps(event))
-                print("Sending event with id " + str(event[1]['id']) + " to " + os.environ.get("OUTPUT_RELAY"))
+                if(event[0] == "EVENT"):
+                    # Remove the event ID from the event
+                    del event[1]
+                    # log event
+                    # print(json.dumps(event))
+                    print("Sending event with id " + str(event[1]['id']) + " to " + os.environ.get("OUTPUT_RELAY"))
 
-                # Relay the event to websocket 2
-                await websocket2.send(json.dumps(event))
+                    # Relay the event to websocket 2
+                    await websocket2.send(json.dumps(event))
+                elif(event[0] == "EOSE"):
+                    print("End of stream")
+
             except Exception as error:
                 print(f"Failed to relay event: {error}")
                 continue
@@ -28,7 +32,7 @@ async def relay_websockets(websocket1, websocket2):
             try:
                 async with websockets.connect(os.environ.get("INPUT_RELAY")) as websocket1:
                     async with websockets.connect(os.environ.get("OUTPUT_RELAY")) as websocket2:
-                        message = '["REQ", "1337", {"kinds": [1]}]'
+                        message = '["REQ", "1337", {"kinds": [1], "limit": 1}]'
                         await websocket1.send(message)
                         await relay_websockets(websocket1, websocket2)
 
