@@ -26,8 +26,11 @@ async def relay_websockets(websocket1, websocket2):
             print("Connection closed, attempting to reconnect...")
             await asyncio.sleep(1)
             try:
-                websocket1 = await websockets.connect(os.environ.get("INPUT_RELAY"))
-                websocket2 = await websockets.connect(os.environ.get("OUTPUT_RELAY"))
+                async with websockets.connect(os.environ.get("INPUT_RELAY")) as websocket1:
+                    async with websockets.connect(os.environ.get("OUTPUT_RELAY")) as websocket2:
+                        message = '["REQ", "1337", {"kinds": [1]}]'
+                        await websocket1.send(message)
+                        await relay_websockets(websocket1, websocket2)
 
             except Exception as error:
                 # If the reconnection attempt fails, repeat the loop and try again
