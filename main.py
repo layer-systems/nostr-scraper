@@ -3,11 +3,11 @@ import os
 import websockets
 import json
 
-async def relay_websockets(websocket1, websocket2):
+async def relay_websockets(inputWebsocket, outputWebsocket):
     while True:
         try:
             # Wait for an event on websocket 1
-            event = json.loads(await websocket1.recv())
+            event = json.loads(await inputWebsocket.recv())
             try:
                 if(event[0] == "EVENT"):
                     # Remove the event ID from the event
@@ -17,7 +17,7 @@ async def relay_websockets(websocket1, websocket2):
                     print("Sending event with id " + str(event[1]['id']) + " to " + os.environ.get("OUTPUT_RELAY"))
 
                     # Relay the event to websocket 2
-                    await websocket2.send(json.dumps(event))
+                    await outputWebsocket.send(json.dumps(event))
                 elif(event[0] == "EOSE"):
                     print("End of stream")
 
@@ -30,11 +30,11 @@ async def relay_websockets(websocket1, websocket2):
             print("Connection closed, attempting to reconnect...")
             await asyncio.sleep(1)
             try:
-                async with websockets.connect(os.environ.get("INPUT_RELAY")) as websocket1:
-                    async with websockets.connect(os.environ.get("OUTPUT_RELAY")) as websocket2:
+                async with websockets.connect(os.environ.get("INPUT_RELAY")) as inputWebsocket:
+                    async with websockets.connect(os.environ.get("OUTPUT_RELAY")) as outputWebsocket:
                         message = '["REQ", "1337", {"kinds": [1], "limit": 1}]'
-                        await websocket1.send(message)
-                        await relay_websockets(websocket1, websocket2)
+                        await inputWebsocket.send(message)
+                        await relay_websockets(inputWebsocket, outputWebsocket)
 
             except Exception as error:
                 # If the reconnection attempt fails, repeat the loop and try again
@@ -44,19 +44,19 @@ async def relay_websockets(websocket1, websocket2):
 async def main():
     print("Scraper started...")
     # Read the websocket URLs from environment variables
-    websocket1_url = os.environ.get("INPUT_RELAY")
-    websocket2_url = os.environ.get("OUTPUT_RELAY")
+    inputUrl = os.environ.get("INPUT_RELAY")
+    outputUrl = os.environ.get("OUTPUT_RELAY")
 
     # If either URL is missing, raise an error
-    if not websocket1_url or not websocket2_url:
+    if not inputUrl or not outputUrl:
         raise ValueError("Please set the INPUT_RELAY and OUTPUT_RELAY environment variables")
 
     try:
-        async with websockets.connect(websocket1_url) as websocket1:
-            async with websockets.connect(websocket2_url) as websocket2:
+        async with websockets.connect(inputUrl) as inputWebsocket:
+            async with websockets.connect(outputUrl) as outputWebsocket:
                 message = '["REQ", "1337", {"kinds": [1]}]'
-                await websocket1.send(message)
-                await relay_websockets(websocket1, websocket2)
+                await inputWebsocket.send(message)
+                await relay_websockets(inputWebsocket, outputWebsocket)
 
     except Exception as error:
         # If the initial connection attempt fails, attempt to reconnect immediately
