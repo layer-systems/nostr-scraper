@@ -16,7 +16,7 @@ async def relay_websockets(websocket1, websocket2):
                 print("Sending event with id " + str(event[1]['id']) + " to " + os.environ.get("OUTPUT_RELAY"))
 
                 # Relay the event to websocket 2
-                # await websocket2.send(event)
+                await websocket2.send(json.dumps(event))
             except Exception as error:
                 print(f"Failed to relay event: {error}")
                 continue
