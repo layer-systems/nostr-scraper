@@ -23,6 +23,9 @@ async def relay_websockets(inputWebsocket, outputWebsocket, kinds):
 
             except Exception as error:
                 print(f"Failed to relay event: {error}")
+                if("sent 1011" in str(error)):
+                    print("Got Code 1011 -> Closing websockets...")
+                    websockets.close()
                 continue
 
         except websockets.ConnectionClosed:
