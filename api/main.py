@@ -113,6 +113,35 @@ def npubforusername(username):
         'data': data
     })
 
+@app.route('/getuser/<username>', methods=['GET'])
+def getuser(username):
+    # username = request.args.get('username')
+    assert username == request.view_args['username']
+
+    # query
+    query = "SELECT encode(pub_key, 'hex'), content FROM event WHERE kind = 0 AND content LIKE '%"+username+"%' ORDER BY created_at DESC LIMIT 10;"
+
+    # execute query
+    cur = conn.cursor()
+    cur.execute(query)
+
+    # fetch all rows and convert to list of dicts
+    rows = cur.fetchall()
+    data = []
+    for row in rows:
+        # content = json.loads(bytes(row[0]).decode('hex'))
+        content = json.loads(bytes(row[1]).decode('utf8'))
+        # data.append({"pubkey":pubkey})
+        data.append(content)
+
+    # close cursor
+    cur.close()
+
+    # return JSON response
+    return jsonify({
+        'data': data
+    })
+
 if __name__ == '__main__':
     # app.run()
     app.run(host='0.0.0.0', port=5000, debug=DEBUG)
