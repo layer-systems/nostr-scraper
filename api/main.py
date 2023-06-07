@@ -72,11 +72,14 @@ def latestPosts():
     # fetch all rows and convert to list of dicts
     rows = cur.fetchall()
     data = []
+    count = 0
     for row in rows:
         # content = bytes(row[0]).decode('utf8').replace("'", '"')
-        content = bytes(row[0])
+        content = bytes(row[0]).decode('utf8').replace("\"", '\'')
         # print(content)
+        # data.append({count:content})
         data.append(content)
+        count += 1
 
     # close cursor
     cur.close()
