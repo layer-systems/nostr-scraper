@@ -63,7 +63,7 @@ def test():
 @app.route('/latestPosts', methods=['GET'])
 def latestPosts():
     # hardcoded query
-    query = 'SELECT content FROM event LIMIT 100;'
+    query = 'SELECT content FROM event ORDER BY created_at DESC LIMIT 100;'
 
     # execute query
     cur = conn.cursor()
