@@ -1,13 +1,13 @@
 <?php
 
-$username = $_GET['username'];
+$query = $_GET['query'];
 
 $API_URL = getenv('API_URL');
 
 // fetch profiles from rest api
 $curl = curl_init();
 curl_setopt_array($curl, [
-	CURLOPT_URL => $API_URL."/getuser/".$username,
+	CURLOPT_URL => $API_URL."/getuser/".$query,
   // CURLOPT_URL => "https://api.predic8.de/shop/products/",
 	CURLOPT_RETURNTRANSFER => true,
 	CURLOPT_ENCODING => "",
