@@ -20,6 +20,25 @@ $countEvents = json_decode($response, true)['data'][0]['countEvents'];
 // print_r($countEvents['data'][0]['countEvents']);
 // end fetch count from rest api
 
+// fetch latestPosts from rest api
+$curl = curl_init();
+curl_setopt_array($curl, [
+	CURLOPT_URL => "http://api:5000/latestPosts",
+  // CURLOPT_URL => "https://api.predic8.de/shop/products/",
+	CURLOPT_RETURNTRANSFER => true,
+	CURLOPT_ENCODING => "",
+	CURLOPT_MAXREDIRS => 10,
+	CURLOPT_TIMEOUT => 0,
+	CURLOPT_FOLLOWLOCATION => true,
+	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+	CURLOPT_CUSTOMREQUEST => "GET",
+]);
+
+$response = curl_exec($curl);
+curl_close($curl);
+$latestPosts = json_decode($response, true)['data'];
+// print_r($latestPosts);
+// end fetch latestPosts from rest api
 ?>
 
 <!doctype html>
@@ -209,10 +228,22 @@ $countEvents = json_decode($response, true)['data'][0]['countEvents'];
   </section>
 
   <div class="main-wrapper py-5 bg-body-tertiary">
-    <div id="main-container" class="container col-md-1 mx-auto">
+    <div id="main-container" class="container ">
       <h1>Events: <?php echo $countEvents; ?></h1>
       <div id="notes-row" class="row row-cols-1 row-cols-sm-2 row-cols-md-1 g-1">
         <div class="col">
+          <div class="card">
+          <?php foreach ($latestPosts as $row)  { ?>
+            <div class="card-body">
+                <!-- <h5 class="card-title">Title</h5> -->
+                <!-- <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6> -->
+                <p class="card-text"><?php echo $row['content'] ?></p>
+                <a href="#" class="card-link">Card link</a>
+                <!-- <a href="#" class="card-link">Another link</a> -->
+            </div>
+            <hr />
+          <?php } ?>
+          </div>
         </div>
       </div>
     </div>
