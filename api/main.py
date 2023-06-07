@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 import psycopg2
 import os
+import json
 
 # create a Flask instance
 app = Flask(__name__)
@@ -55,10 +56,14 @@ def countEvents():
         'data': data
     })
 
+@app.route('/test', methods=['GET'])
+def test():
+    return jsonify({"test": "test"})
+
 @app.route('/latestPosts', methods=['GET'])
 def latestPosts():
     # hardcoded query
-    query = "SELECT content FROM event LIMIT 100;"
+    query = 'SELECT content FROM event LIMIT 100;'
 
     # execute query
     cur = conn.cursor()
@@ -68,8 +73,10 @@ def latestPosts():
     rows = cur.fetchall()
     data = []
     for row in rows:
-        # data.append(row[0])
-        print(row)
+        # content = bytes(row[0]).decode('utf8').replace("'", '"')
+        content = bytes(row[0])
+        # print(content)
+        data.append(content)
 
     # close cursor
     cur.close()
