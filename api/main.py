@@ -142,6 +142,35 @@ def getuser(username):
         'data': data
     })
 
+@app.route('/getnoteswithtag/<tag>', methods=['GET'])
+def getnoteswithtag(tag):
+    # username = request.args.get('username')
+    assert tag == request.view_args['tag']
+
+    # query
+    query = "SELECT content FROM event LEFT JOIN tag ON event.id = tag.event_id WHERE tag.value LIKE '%"+tag+"%';"
+
+    # execute query
+    cur = conn.cursor()
+    cur.execute(query)
+
+    # fetch all rows and convert to list of dicts
+    rows = cur.fetchall()
+    data = []
+    for row in rows:
+        content = json.loads(bytes(row[0]).decode('utf8'))
+        data.append(content)
+        # print(bytes(row[0]).decode('utf8'))
+
+    # close cursor
+    cur.close()
+
+    # return JSON response
+    return jsonify({
+        'data': data
+    })
+
+
 if __name__ == '__main__':
     # app.run()
     app.run(host='0.0.0.0', port=5000, debug=DEBUG)
