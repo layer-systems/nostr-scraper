@@ -38,6 +38,8 @@ services:
   api:
     build: ./api
     container_name: api
+    hostname: api
+    domainname: api
     restart: always
     environment:
       DB_USER: nostr

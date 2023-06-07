@@ -1,5 +1,25 @@
 <?php
 
+// fetch count from rest api
+$curl = curl_init();
+curl_setopt_array($curl, [
+	CURLOPT_URL => "http://api:5000/countEvents",
+  // CURLOPT_URL => "https://api.predic8.de/shop/products/",
+	CURLOPT_RETURNTRANSFER => true,
+	CURLOPT_ENCODING => "",
+	CURLOPT_MAXREDIRS => 10,
+	CURLOPT_TIMEOUT => 0,
+	CURLOPT_FOLLOWLOCATION => true,
+	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+	CURLOPT_CUSTOMREQUEST => "GET",
+]);
+
+$response = curl_exec($curl);
+curl_close($curl);
+$countEvents = json_decode($response, true)['data'][0]['countEvents'];
+// print_r($countEvents['data'][0]['countEvents']);
+// end fetch count from rest api
+
 ?>
 
 <!doctype html>
@@ -190,7 +210,7 @@
 
   <div class="main-wrapper py-5 bg-body-tertiary">
     <div id="main-container" class="container col-md-1 mx-auto">
-      <h1>Testing</h1>
+      <h1>Events: <?php echo $countEvents; ?></h1>
       <div id="notes-row" class="row row-cols-1 row-cols-sm-2 row-cols-md-1 g-1">
         <div class="col">
         </div>
