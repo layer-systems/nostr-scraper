@@ -35,9 +35,9 @@ services:
       - ./postgres_data:/var/lib/postgresql/data:Z
     ports:
       - 5432:5432
-  stats:
-    build: ./stats
-    container_name: stats
+  api:
+    build: ./api
+    container_name: api
     restart: always
     environment:
       DB_USER: nostr
@@ -51,3 +51,22 @@ services:
       - postgres
     ports:
       - 8081:5000
+  world:
+    build: ./world
+    container_name: world
+    restart: always
+    environment:
+      DB_USER: nostr
+      DB_PASSWORD: justasimplepassword
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: nostr
+      DEBUG: "True"
+    depends_on:
+      - relay
+      - postgres
+      - api
+    volumes:
+      - ./world:/var/www/html/
+    ports:
+      - 80:80

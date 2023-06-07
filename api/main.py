@@ -55,6 +55,30 @@ def countEvents():
         'data': data
     })
 
+@app.route('/latestPosts', methods=['GET'])
+def latestPosts():
+    # hardcoded query
+    query = "SELECT content FROM event LIMIT 100;"
+
+    # execute query
+    cur = conn.cursor()
+    cur.execute(query)
+
+    # fetch all rows and convert to list of dicts
+    rows = cur.fetchall()
+    data = []
+    for row in rows:
+        # data.append(row[0])
+        print(row)
+
+    # close cursor
+    cur.close()
+
+    # return JSON response
+    return jsonify({
+        'data': data
+    })
+
 if __name__ == '__main__':
     # app.run()
     app.run(host='0.0.0.0', port=5000, debug=DEBUG)
