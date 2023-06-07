@@ -207,13 +207,15 @@ try {
 
 <main>
 
-  <section id="search-section" class="py-3 text-center container">
+<section id="search-section" class="py-3 text-center container">
     <div class="row py-lg">
       <div class="col-lg-12 col-md-8 mx-auto">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Tag, Username, Hash, etc." aria-label="Tag, Username, Hash, etc." aria-describedby="button-addon2">
+        <form action="search.php">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" name="query" placeholder="Tag, Username, Hash, etc." aria-label="Tag, Username, Hash, etc." aria-describedby="button-addon2">
             <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   </section>
