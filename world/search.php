@@ -20,8 +20,13 @@ curl_setopt_array($curl, [
 
 $response = curl_exec($curl);
 curl_close($curl);
-$profiles = json_decode($response, true)['data'];
-// print_r($profiles);
+try {
+  $profiles = json_decode($response, true)['data'];
+} catch (Exception $e) {
+  $profiles = [];
+  print_r($response);
+}
+print_r($profiles);
 // end fetch profiles from rest api
 
 ?>
@@ -228,7 +233,7 @@ $profiles = json_decode($response, true)['data'];
                 <?php } ?>
                 <h6 class="card-subtitle mb-2 text-body-secondary"><?php echo(json_decode($row['content'], true)['nip05']); ?></h6>
                 <p class="card-text"><?php echo(json_decode($row['content'], true)['about']); ?></p>
-                <a href="#" class="card-link">Card link</a>
+                <a href="profile.php?pubkey=<?php echo($row['pubkey']); ?>" class="card-link">> Visit Profile</a>
                 <!-- <a href="#" class="card-link">Another link</a> -->
             </div>
             <hr />
