@@ -26,7 +26,7 @@ try {
   $profiles = [];
   print_r($response);
 }
-print_r($profiles);
+// print_r($profiles);
 // end fetch profiles from rest api
 
 ?>
