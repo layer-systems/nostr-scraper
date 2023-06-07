@@ -233,25 +233,8 @@ $latestPosts = json_decode($response, true)['data'];
 
   <div class="main-wrapper py-5 bg-body-tertiary">
     <div id="main-container" class="container ">
-      <h2>Posts</h2>
+      <h4>> Total Events: <?php echo $countEvents; ?></h4>
       <hr />
-      <h4>Events: <?php echo $countEvents; ?></h4>
-      <div id="notes-row" class="row row-cols-1 row-cols-sm-2 row-cols-md-1 g-1">
-        <div class="col">
-          <div class="card">
-          <?php foreach ($latestPosts as $row)  { ?>
-            <div class="card-body">
-                <!-- <h5 class="card-title">Title</h5> -->
-                <!-- <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6> -->
-                <p class="card-text"><?php echo $row['content'] ?></p>
-                <a href="#" class="card-link">Card link</a>
-                <!-- <a href="#" class="card-link">Another link</a> -->
-            </div>
-            <hr />
-          <?php } ?>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
