@@ -90,7 +90,7 @@ def npubforusername(username):
     assert username == request.view_args['username']
 
     # query
-    query = "SELECT encode(pub_key, 'hex') FROM event WHERE kind = 0 AND content LIKE '%"+usermame+"%' ORDER BY created_at DESC LIMIT 1;"
+    query = "SELECT encode(pub_key, 'hex') FROM event WHERE kind = 0 AND content LIKE '%"+username+"%' ORDER BY created_at DESC LIMIT 1;"
 
     # execute query
     cur = conn.cursor()
