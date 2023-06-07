@@ -229,7 +229,9 @@ $latestPosts = json_decode($response, true)['data'];
 
   <div class="main-wrapper py-5 bg-body-tertiary">
     <div id="main-container" class="container ">
-      <h1>Events: <?php echo $countEvents; ?></h1>
+      <h2>Posts</h2>
+      <hr />
+      <h4>Events: <?php echo $countEvents; ?></h4>
       <div id="notes-row" class="row row-cols-1 row-cols-sm-2 row-cols-md-1 g-1">
         <div class="col">
           <div class="card">
