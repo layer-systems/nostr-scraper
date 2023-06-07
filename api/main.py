@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import psycopg2
 import os
 import json
@@ -63,7 +63,7 @@ def test():
 @app.route('/latestPosts', methods=['GET'])
 def latestPosts():
     # hardcoded query
-    query = 'SELECT content FROM event ORDER BY created_at DESC LIMIT 100;'
+    query = 'SELECT content FROM event WHERE kind = 1 ORDER BY created_at DESC LIMIT 100;'
 
     # execute query
     cur = conn.cursor()
@@ -75,6 +75,35 @@ def latestPosts():
     for row in rows:
         content = json.loads(bytes(row[0]).decode('utf8'))
         data.append(content)
+
+    # close cursor
+    cur.close()
+
+    # return JSON response
+    return jsonify({
+        'data': data
+    })
+
+@app.route('/getnpubforusername/<username>', methods=['GET'])
+def npubforusername(username):
+    # username = request.args.get('username')
+    assert username == request.view_args['username']
+
+    # query
+    query = "SELECT encode(pub_key, 'hex') FROM event WHERE kind = 0 AND content LIKE '%"+usermame+"%' ORDER BY created_at DESC LIMIT 1;"
+
+    # execute query
+    cur = conn.cursor()
+    cur.execute(query)
+
+    # fetch all rows and convert to list of dicts
+    rows = cur.fetchall()
+    data = []
+    for row in rows:
+        # content = json.loads(bytes(row[0]).decode('hex'))
+        pubkey = row[0]
+        # data.append({"pubkey":pubkey})
+        data.append(pubkey)
 
     # close cursor
     cur.close()
