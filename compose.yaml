@@ -58,12 +58,7 @@ services:
     container_name: world
     restart: always
     environment:
-      DB_USER: nostr
-      DB_PASSWORD: justasimplepassword
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_DATABASE: nostr
-      DEBUG: "True"
+      API_URL: http://api:5000
     depends_on:
       - relay
       - postgres
