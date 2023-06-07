@@ -212,7 +212,7 @@ try {
       <div class="col-lg-12 col-md-8 mx-auto">
         <form action="search.php">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="query" placeholder="Tag, Username, Hash, etc." aria-label="Tag, Username, Hash, etc." aria-describedby="button-addon2">
+            <input type="text" class="form-control" name="query" placeholder="Tag, Username, Hash, etc." aria-label="Tag, Username, Hash, etc." aria-describedby="button-addon2" value="<?php echo $query; ?>">
             <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
           </div>
         </form>
