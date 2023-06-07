@@ -1,11 +1,11 @@
 <?php
 
-$API_URL = os.getenv('API_URL');
+$API_URL = getenv('API_URL');
 
 // fetch count from rest api
 $curl = curl_init();
 curl_setopt_array($curl, [
-	CURLOPT_URL => $API_URL+"/countEvents",
+	CURLOPT_URL => $API_URL."/countEvents",
   // CURLOPT_URL => "https://api.predic8.de/shop/products/",
 	CURLOPT_RETURNTRANSFER => true,
 	CURLOPT_ENCODING => "",
