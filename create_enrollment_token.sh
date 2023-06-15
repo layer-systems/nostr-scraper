@@ -1,0 +1,1 @@
+docker exec -it elasticsearch bin/elasticsearch-create-enrollment-token --scope kibana
