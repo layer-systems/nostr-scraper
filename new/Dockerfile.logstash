@@ -1,0 +1,10 @@
+FROM docker.elastic.co/logstash/logstash:8.8.1
+
+# install dependency
+RUN /usr/share/logstash/bin/logstash-plugin install logstash-integration-jdbc
+
+# copy lib database jdbc jars
+# COPY ./compose/mysql/mysql-connector-java-8.0.11.jar /usr/share/logstash/logstash-core/lib/jars/mysql-connector-java.jar
+# COPY ./compose/sql-server/mssql-jdbc-11.2.0.jre11.jar /usr/share/logstash/logstash-core/lib/jars/mssql-jdbc.jar
+# COPY ./compose/oracle/ojdbc6-11.2.0.4.jar /usr/share/logstash/logstash-core/lib/jars/ojdbc6.jar
+COPY ./postgresql-42.2.5.jar /usr/share/logstash/jdk/postgresql-42.2.5.jar
